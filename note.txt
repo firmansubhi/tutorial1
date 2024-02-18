@@ -1,0 +1,19 @@
+https://reactnavigation.org/docs/getting-started/
+
+npx create-expo-app navigation
+
+npm install expo@latest
+npx expo install --fix
+
+npx expo install react-native-web react-dom @expo/metro-runtime
+
+npm install @react-navigation/native @react-navigation/native-stack @react-navigation/bottom-tabs
+
+npx expo install react-native-screens react-native-safe-area-context
+
+npm i --save @fortawesome/react-native-fontawesome @fortawesome/fontawesome-svg-core react-native-svg
+
+npm i --save @fortawesome/free-solid-svg-icons
+npm i --save @fortawesome/free-brands-svg-icons
+npm i --save @fortawesome/free-regular-svg-icons
+npm install axios
