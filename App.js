@@ -15,10 +15,5 @@ export default function App() {
 const MainApp = () => {
 	const { isLogin } = useAuth();
 
-	return (
-		<>
-			{isLogin && <View></View>}
-			{isLogin ? <Dashboard /> : <Login />}
-		</>
-	);
+	return <>{isLogin ? <Dashboard /> : <Login />}</>;
 };

@@ -13,12 +13,19 @@ import {
 } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faTrash, faPen } from "@fortawesome/free-solid-svg-icons";
+import { baseUrl, AuthToken } from "../src/context/AuthContext";
+
 export default AllProduct = ({ navigation }) => {
 	const [products, setProducts] = useState([]);
 	const [refreshing, setRefreshing] = React.useState(false);
+
 	const getProducts = async () => {
 		axios
-			.get("https://learning2.pt-mine.id/product/list")
+			.get(`${baseUrl}/product/list`, {
+				headers: {
+					Authorization: "Bearer " + AuthToken,
+				},
+			})
 			.then((res) => {
 				setProducts(res.data);
 				setRefreshing(false);
@@ -38,7 +45,7 @@ export default AllProduct = ({ navigation }) => {
 	}, []);
 	const onPressDelete = (id) => {
 		axios
-			.delete("https://learning2.pt-mine.id/product/" + id)
+			.delete(`${baseUrl}/product/${id}`)
 			.then((res) => {
 				getProducts();
 			})

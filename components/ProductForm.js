@@ -10,6 +10,9 @@ import {
 	ScrollView,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import { baseUrl } from "../src/context/AuthContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 export default ProductForm = ({ route, navigation }) => {
 	const { productId } = route.params;
 	const [name, setName] = useState("");
@@ -38,8 +41,14 @@ export default ProductForm = ({ route, navigation }) => {
 	}, [productId]);
 	const getProduct = async () => {
 		if (productId != "") {
+			const app = await AsyncStorage.getItem("appuser");
+			let appuser = JSON.parse(app);
 			axios
-				.get("https://learning2.pt-mine.id/product/row/" + productId)
+				.get(`${baseUrl}/product/row/${productId}`, {
+					headers: {
+						Authorization: "Bearer " + appuser.token,
+					},
+				})
 				.then((res) => {
 					setName(res.data.row.title);
 					setDescription(res.data.row.description);
@@ -55,6 +64,9 @@ export default ProductForm = ({ route, navigation }) => {
 		}
 	};
 	const onPressSave = async () => {
+		const app = await AsyncStorage.getItem("appuser");
+		let appuser = JSON.parse(app);
+
 		setLoading(true);
 		const formData = new FormData();
 		formData.append("productId", productId);
@@ -63,9 +75,10 @@ export default ProductForm = ({ route, navigation }) => {
 		formData.append("image", image);
 		formData.append("mimeType", mimeType);
 		axios
-			.post("https://learning2.pt-mine.id/product/save", formData, {
+			.post(`${baseUrl}/product/save`, formData, {
 				headers: {
 					"Content-Type": "multipart/form-data",
+					Authorization: "Bearer " + appuser.token,
 				},
 			})
 			.then((response) => {
