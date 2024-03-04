@@ -26,9 +26,17 @@ export const AuthProvider = ({ children }) => {
 	);
 };
 
-export const AuthToken = async () => {
-	const app = await AsyncStorage.getItem("appuser");
-	let appuser = JSON.parse(app);
-	console.log("Bearer " + appuser.token);
-	return appuser.token;
+export const getToken = async () => {
+	try {
+		const token = await AsyncStorage.getItem("appuser");
+		if (token !== null) {
+			const appuser = JSON.parse(token);
+			const bearerToken = "Bearer " + appuser.token;
+			return bearerToken;
+		} else {
+			return null;
+		}
+	} catch (error) {
+		return null;
+	}
 };

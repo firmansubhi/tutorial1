@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faTrash, faPen } from "@fortawesome/free-solid-svg-icons";
-import { baseUrl, AuthToken } from "../src/context/AuthContext";
+import { baseUrl, getToken } from "../src/context/AuthContext";
 
 export default AllProduct = ({ navigation }) => {
 	const [products, setProducts] = useState([]);
@@ -23,7 +23,7 @@ export default AllProduct = ({ navigation }) => {
 		axios
 			.get(`${baseUrl}/product/list`, {
 				headers: {
-					Authorization: "Bearer " + AuthToken,
+					Authorization: await getToken(),
 				},
 			})
 			.then((res) => {
@@ -43,9 +43,13 @@ export default AllProduct = ({ navigation }) => {
 		// Return the function to unsubscribe from the event so it gets removed on unmount
 		return unsubscribe;
 	}, []);
-	const onPressDelete = (id) => {
+	const onPressDelete = async (id) => {
 		axios
-			.delete(`${baseUrl}/product/${id}`)
+			.delete(`${baseUrl}/product/${id}`, {
+				headers: {
+					Authorization: await getToken(),
+				},
+			})
 			.then((res) => {
 				getProducts();
 			})
